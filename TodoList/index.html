@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Todo List</h1>
+
+        <div class="input-box">
+            <input type="text" id="taskInput" placeholder="Введите задачу...">
+            <button onclick="addTask()">Добавить</button>
+        </div>
+
+        <ul id="taskList"></ul>
+
+        <p id="emptyMessage">Список задач пустой</p>
+    </div>
+
+    <script>
+        const taskInput = document.getElementById("taskInput");
+        const taskList = document.getElementById("taskList");
+        const emptyMessage = document.getElementById("emptyMessage");
+
+        function addTask() {
+            const text = taskInput.value.trim();
+
+            if (text === "") {
+                return;
+            }
+
+            const li = document.createElement("li");
+
+            li.innerHTML = `
+            <span onclick="completeTask(this)">${text}</span>
+            <button class="delete-btn" onclick="deleteTask(this)">Удалить</button>
+        `;
+
+            taskList.appendChild(li);
+
+            taskInput.value = "";
+
+            updateEmptyMessage();
+        }
+
+        function completeTask(element) {
+            element.classList.toggle("completed");
+        }
+
+        function deleteTask(button) {
+            button.parentElement.remove();
+            updateEmptyMessage();
+        }
+
+        function updateEmptyMessage() {
+            if (taskList.children.length === 0) {
+                emptyMessage.style.display = "block";
+            } else {
+                emptyMessage.style.display = "none";
+            }
+        }
+
+        taskInput.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                addTask();
+            }
+        });
+
+        updateEmptyMessage();
+    </script>
+
+</body>
+
+</html>
